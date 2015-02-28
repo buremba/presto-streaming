@@ -11,8 +11,8 @@ import com.facebook.presto.spi.block.FixedWidthBlockBuilder;
 import com.facebook.presto.spi.type.Type;
 import io.airlift.slice.Slice;
 import org.rakam.presto.stream.StreamColumnHandle;
-import org.rakam.presto.stream.storage.GroupByQueryRow;
-import org.rakam.presto.stream.storage.MultipleRowTable;
+import org.rakam.presto.stream.storage.GroupByStreamRow;
+import org.rakam.presto.stream.storage.GroupByRowTable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,16 +20,16 @@ import java.util.List;
 /**
  * Created by buremba <Burak Emre Kabakcı> on 21/01/15 13:01.
  */
-public class MultipleRowRecordCursor implements RecordCursor {
-    private final GroupByQueryRow[] fieldHandlers;
+public class GroupByStreamRecordCursor implements RecordCursor {
+    private final GroupByStreamRow[] fieldHandlers;
     private final GroupByHash groupByHash;
     private int groupId = -1;
 
-    public MultipleRowRecordCursor(List<StreamColumnHandle> columnHandles, MultipleRowTable table) {
+    public GroupByStreamRecordCursor(List<StreamColumnHandle> columnHandles, GroupByRowTable table) {
 
         groupByHash = table.getGroupByHash();
 
-        List<GroupByQueryRow> fields = new ArrayList<>();
+        List<GroupByStreamRow> fields = new ArrayList<>();
         int aggIdx = 0;
         int groupByIdx = 0;
         PageBuilder pageBuilder = new PageBuilder(groupByHash.getTypes());
@@ -41,7 +41,7 @@ public class MultipleRowRecordCursor implements RecordCursor {
             }
         }
 
-        fieldHandlers = fields.stream().toArray(GroupByQueryRow[]::new);
+        fieldHandlers = fields.stream().toArray(GroupByStreamRow[]::new);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class MultipleRowRecordCursor implements RecordCursor {
     public void close() {
     }
 
-    public class GroupByAccumulatorRow implements GroupByQueryRow {
+    public class GroupByAccumulatorRow implements GroupByStreamRow {
         private final GroupedAccumulator accumulators;
 
         public GroupByAccumulatorRow(GroupedAccumulator accumulators) {
@@ -145,7 +145,7 @@ public class MultipleRowRecordCursor implements RecordCursor {
         }
     }
 
-    public class GroupByKeyRow implements GroupByQueryRow {
+    public class GroupByKeyRow implements GroupByStreamRow {
         private final GroupByHash groupByHash;
         private final PageBuilder pageBuilder;
         private final int idx;

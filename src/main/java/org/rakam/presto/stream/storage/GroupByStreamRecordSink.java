@@ -1,4 +1,4 @@
-package org.rakam.presto.stream.query;
+package org.rakam.presto.stream.storage;
 
 import com.facebook.presto.operator.GroupByHash;
 import com.facebook.presto.operator.GroupByIdBlock;
@@ -6,16 +6,15 @@ import com.facebook.presto.operator.aggregation.GroupedAccumulator;
 import com.facebook.presto.spi.ConnectorPageSink;
 import com.facebook.presto.spi.Page;
 import com.facebook.presto.spi.block.Block;
-import org.rakam.presto.stream.storage.MultipleRowTable;
 
 /**
  * Created by buremba <Burak Emre Kabakcı> on 21/01/15 11:23.
  */
-public class StreamMultipleRowRecordSink implements ConnectorPageSink {
+public class GroupByStreamRecordSink implements ConnectorPageSink {
 
-    MultipleRowTable table;
+    GroupByRowTable table;
 
-    public StreamMultipleRowRecordSink(MultipleRowTable table) {
+    public GroupByStreamRecordSink(GroupByRowTable table) {
         this.table = table;
     }
 

@@ -15,11 +15,11 @@ package org.rakam.presto.stream.storage;
 
 import com.facebook.presto.operator.aggregation.Accumulator;
 
-public class SingleRowTable implements MaterializedView
+public class SimpleRowTable implements MaterializedView
 {
     private final Accumulator[] aggregations;
 
-    public SingleRowTable(Accumulator[] accumulatorMap)
+    public SimpleRowTable(Accumulator[] accumulatorMap)
     {
         this.aggregations = accumulatorMap;
     }

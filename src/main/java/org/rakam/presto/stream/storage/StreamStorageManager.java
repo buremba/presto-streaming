@@ -74,7 +74,7 @@ public class StreamStorageManager
         boolean isGroupByQuery = columns.stream().anyMatch(x -> !x.getIsAggregationField());
 
         if (!isGroupByQuery) {
-            return new SingleRowTable(columns.stream()
+            return new SimpleRowTable(columns.stream()
                     .map(x -> queryAnalyzer.getAccumulatorFactory(x.getSignature()).createAccumulator())
                     .toArray(Accumulator[]::new));
         } else {
@@ -91,7 +91,7 @@ public class StreamStorageManager
                     .mapToInt(x -> x.getOrdinalPosition()).toArray();
 
             GroupByHash groupByHash = new GroupByHash(types, positions, Optional.empty(), 10000);
-            return new MultipleRowTable(groupedAggregations, groupByHash, positions);
+            return new GroupByRowTable(groupedAggregations, groupByHash, positions);
         }
     }
 

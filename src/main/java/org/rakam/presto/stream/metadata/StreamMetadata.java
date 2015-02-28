@@ -48,8 +48,8 @@ import org.rakam.presto.stream.StreamTableHandle;
 import org.rakam.presto.stream.analyze.AggregationQuery;
 import org.rakam.presto.stream.analyze.QueryAnalyzer;
 import org.rakam.presto.stream.storage.MaterializedView;
-import org.rakam.presto.stream.storage.MultipleRowTable;
-import org.rakam.presto.stream.storage.SingleRowTable;
+import org.rakam.presto.stream.storage.GroupByRowTable;
+import org.rakam.presto.stream.storage.SimpleRowTable;
 import org.rakam.presto.stream.storage.StreamInsertTableHandle;
 import org.rakam.presto.stream.storage.StreamStorageManager;
 import org.skife.jdbi.v2.IDBI;
@@ -346,7 +346,7 @@ public class StreamMetadata
 
         MaterializedView view;
         if (!execute.isGroupByQuery()) {
-            view = new SingleRowTable(execute.aggregationFields.stream()
+            view = new SimpleRowTable(execute.aggregationFields.stream()
                     .map(x -> x.accumulatorFactory.createAccumulator())
                     .toArray(Accumulator[]::new));
         } else {
@@ -358,7 +358,7 @@ public class StreamMetadata
             int[] positions = execute.groupByFields.stream().mapToInt(x -> x.position).toArray();
 
             GroupByHash groupByHash = new GroupByHash(types, positions, Optional.empty(), 10000);
-            view = new MultipleRowTable(groupedAggregations, groupByHash, positions);
+            view = new GroupByRowTable(groupedAggregations, groupByHash, positions);
         }
 
         storageAdapter.addMaterializedView(newTableId, view);

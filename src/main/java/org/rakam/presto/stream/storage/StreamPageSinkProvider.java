@@ -5,7 +5,6 @@ import com.facebook.presto.spi.ConnectorOutputTableHandle;
 import com.facebook.presto.spi.ConnectorPageSink;
 import com.facebook.presto.spi.ConnectorPageSinkProvider;
 import com.google.inject.Inject;
-import org.rakam.presto.stream.query.StreamMultipleRowRecordSink;
 
 import static com.facebook.presto.util.Types.checkType;
 
@@ -26,12 +25,12 @@ public class StreamPageSinkProvider implements ConnectorPageSinkProvider {
         StreamInsertTableHandle handle = checkType(tableHandle, StreamInsertTableHandle.class, "tableHandle");
 
         MaterializedView materializedView = storageManager.get(handle.getTableId());
-        if(materializedView instanceof SingleRowTable) {
-            return new StreamSingleRowRecordSink((SingleRowTable) materializedView);
+        if(materializedView instanceof SimpleRowTable) {
+            return new SimpleStreamRecordSink((SimpleRowTable) materializedView);
         }else {
 //            StreamMultipleRowRecordSink recordSink = new StreamMultipleRowRecordSink((MultipleRowTable) materializedView);
 //            return new RecordPageSink(recordSink);
-            return new StreamMultipleRowRecordSink((MultipleRowTable) materializedView);
+            return new GroupByStreamRecordSink((GroupByRowTable) materializedView);
         }
     }
 
@@ -40,12 +39,12 @@ public class StreamPageSinkProvider implements ConnectorPageSinkProvider {
         StreamInsertTableHandle handle = checkType(insertTableHandle, StreamInsertTableHandle.class, "tableHandle");
 
         MaterializedView materializedView = storageManager.get(handle.getTableId());
-        if(materializedView instanceof SingleRowTable) {
-            return new StreamSingleRowRecordSink((SingleRowTable) materializedView);
+        if(materializedView instanceof SimpleRowTable) {
+            return new SimpleStreamRecordSink((SimpleRowTable) materializedView);
         }else {
 //            StreamMultipleRowRecordSink recordSink = new StreamMultipleRowRecordSink((MultipleRowTable) materializedView);
 //            return new RecordPageSink(recordSink);
-            return new StreamMultipleRowRecordSink((MultipleRowTable) materializedView);
+            return new GroupByStreamRecordSink((GroupByRowTable) materializedView);
         }
     }
 }

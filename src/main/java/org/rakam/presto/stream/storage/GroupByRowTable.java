@@ -7,12 +7,12 @@ import com.google.common.primitives.Ints;
 /**
  * Created by buremba <Burak Emre Kabakcı> on 21/01/15 08:16.
  */
-public class MultipleRowTable implements MaterializedView {
+public class GroupByRowTable implements MaterializedView {
     private final GroupedAccumulator[] groupedAggregations;
     private final GroupByHash groupByHash;
     private final boolean[] aggregationChannels;
 
-    public MultipleRowTable(GroupedAccumulator[] groupedAggregations, GroupByHash groupByHash, int[] groupByHashChannels)
+    public GroupByRowTable(GroupedAccumulator[] groupedAggregations, GroupByHash groupByHash, int[] groupByHashChannels)
     {
         this.groupedAggregations = groupedAggregations;
         this.groupByHash = groupByHash;

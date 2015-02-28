@@ -8,12 +8,12 @@ import com.facebook.presto.spi.block.Block;
 /**
  * Created by buremba <Burak Emre Kabakcı> on 19/01/15 13:47.
  */
-public class StreamSingleRowRecordSink implements ConnectorPageSink
+public class SimpleStreamRecordSink implements ConnectorPageSink
 {
 
-    private final SingleRowTable table;
+    private final SimpleRowTable table;
 
-    public StreamSingleRowRecordSink(SingleRowTable table) {
+    public SimpleStreamRecordSink(SimpleRowTable table) {
         this.table = table;
     }
 

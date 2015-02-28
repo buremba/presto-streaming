@@ -20,8 +20,8 @@ import com.google.common.collect.ImmutableList;
 import org.rakam.presto.stream.StreamColumnHandle;
 import org.rakam.presto.stream.StreamSplit;
 import org.rakam.presto.stream.storage.MaterializedView;
-import org.rakam.presto.stream.storage.MultipleRowTable;
-import org.rakam.presto.stream.storage.SingleRowTable;
+import org.rakam.presto.stream.storage.GroupByRowTable;
+import org.rakam.presto.stream.storage.SimpleRowTable;
 
 import java.util.List;
 
@@ -55,10 +55,10 @@ public class StreamRecordSet implements RecordSet
     @Override
     public RecordCursor cursor()
     {
-        if(view instanceof SingleRowTable) {
-            return new SingleRowRecordCursor(columnHandles, (SingleRowTable) view);
+        if(view instanceof SimpleRowTable) {
+            return new SingleRowRecordCursor(columnHandles, (SimpleRowTable) view);
         }else {
-            return new MultipleRowRecordCursor(columnHandles, (MultipleRowTable) view);
+            return new GroupByStreamRecordCursor(columnHandles, (GroupByRowTable) view);
         }
     }
 }

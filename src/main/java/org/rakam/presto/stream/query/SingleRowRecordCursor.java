@@ -24,7 +24,7 @@ import com.facebook.presto.spi.block.VariableWidthBlockBuilder;
 import com.facebook.presto.spi.type.Type;
 import io.airlift.slice.Slice;
 import org.rakam.presto.stream.StreamColumnHandle;
-import org.rakam.presto.stream.storage.SingleRowTable;
+import org.rakam.presto.stream.storage.SimpleRowTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -39,7 +39,7 @@ public class SingleRowRecordCursor
     private final Accumulator[] table;
     boolean firstRow = true;
 
-    public SingleRowRecordCursor(List<StreamColumnHandle> columnHandles, SingleRowTable table)
+    public SingleRowRecordCursor(List<StreamColumnHandle> columnHandles, SimpleRowTable table)
     {
         this.columnHandles = columnHandles;
         this.table = table.getAggregations();
